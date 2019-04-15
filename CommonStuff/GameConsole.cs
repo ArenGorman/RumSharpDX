@@ -29,7 +29,7 @@ namespace CommonStuff
         public byte textLimit = 19;
         Vector2 consolePos;
         List<string> consoleLog;
-        private string rawInput;
+        string rawInput;
         string inputInvitation;
         Game gameInstance;
         RenderTarget renderTarget2D;

@@ -55,6 +55,7 @@ namespace CommonStuff
 		RenderTargetView	renderView;
 		Texture2D			depthBuffer;
 		DepthStencilView	depthView;
+        public Color        bgcolor = Color.Black;
         public bool blockMovementInput = false;
         bool isExitRequested = false;
 
@@ -192,7 +193,7 @@ namespace CommonStuff
 			Context.OutputMerger.SetTargets(depthView, renderView);
 			Context.Rasterizer.SetViewport(new Viewport(0, 0, Form.ClientSize.Width, Form.ClientSize.Height, 0.0f, 1.0f));
 						
-			Context.ClearRenderTargetView(renderView, Color.Black);
+			Context.ClearRenderTargetView(renderView, bgcolor);
             Context.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
             //Context.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth | DepthStencilClearFlags.Stencil, 1.0f, 0);
         }

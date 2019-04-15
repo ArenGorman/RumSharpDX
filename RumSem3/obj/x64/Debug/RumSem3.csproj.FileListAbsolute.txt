@@ -64,3 +64,17 @@ E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\liblua53.s
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\KeraLua.dll
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\NLua.dll
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\KeraLua.xml
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\ObjModelShader.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_bk.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_dn.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_ft.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_lf.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_rt.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_up.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Models\skySphere.obj
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_bk.jpg
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_dn.jpg
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_ft.jpg
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_lf.jpg
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_rt.jpg
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_up.jpg

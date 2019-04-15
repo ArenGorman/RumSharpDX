@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace CommonStuff
 	public class TextureLoader
 	{
 		Game game;
-		public ImagingFactory Factory { protected set; get; }
+		private static ImagingFactory Factory { set; get; }
 
 
 		public TextureLoader(Game game)
@@ -23,6 +24,61 @@ namespace CommonStuff
 			Factory = new ImagingFactory();
         }
 
+        public Texture2D LoadCubeMapFromFiles(string fileSetName)
+        {
+            Texture2D tex;
+            //FormatConverter converter = new FormatConverter(Factory);
+
+
+
+            List<byte[]> buffers = new List<byte[]>();
+
+            string[] filePostfixes = { "ft", "bk", "up", "dn", "rt", "lf" };
+            var width = 16;
+            var height = 16;
+            int stride = width * 4;
+
+            for (int i = 0; i < filePostfixes.Length; i++)
+            {
+                string fileName = fileSetName.Split('.')[0] + "_" + filePostfixes[i] + "." + fileSetName.Split('.')[1];
+                BitmapSource converter = LoadBitmap(fileName);
+                //var decoder = new BitmapDecoder(Factory, fileName, DecodeOptions.CacheOnDemand);
+                //var frame = decoder.GetFrame(0);
+                //converter.Initialize(frame, PixelFormat.Format32bppPRGBA);
+
+                width = converter.Size.Width;
+                height = converter.Size.Height;
+                stride = width * 4;
+
+                byte[] data = new byte[converter.Size.Height * stride];
+
+                converter.CopyPixels(data, stride);
+                buffers.Add(data);
+            }
+            tex = new Texture2D(game.Device, new Texture2DDescription {
+                ArraySize = 6,
+                MipLevels = 1,
+                BindFlags = BindFlags.ShaderResource | BindFlags.RenderTarget,
+                Format = SharpDX.DXGI.Format.R8G8B8A8_UNorm,
+                OptionFlags = ResourceOptionFlags.TextureCube | ResourceOptionFlags.GenerateMipMaps,
+                Usage = ResourceUsage.Default,
+                CpuAccessFlags = CpuAccessFlags.None,
+                SampleDescription = new SharpDX.DXGI.SampleDescription(1, 0),
+                Width = width,
+                Height = height
+            });
+            var buffersArray = buffers.ToArray();
+            for (int i = 0; i < 6; i++)
+            {
+                
+                IntPtr ptr = Marshal.UnsafeAddrOfPinnedArrayElement(buffersArray[i], 0);
+                var dataBox = new SharpDX.DataBox(ptr, stride, stride * height);
+                game.Device.ImmediateContext.UpdateSubresource(dataBox,
+                    tex, SharpDX.Direct3D11.Resource.CalculateSubResourceIndex(0, i, 1));
+            }
+
+            return tex;
+        }
 
 		public Texture2D LoadTextureFromFile(string fileName)
 		{
@@ -59,10 +115,33 @@ namespace CommonStuff
 					OptionFlags = ResourceOptionFlags.None,
 					SampleDescription = new SampleDescription(1, 0)
 				}, new[] { new SharpDX.DataBox(buffer.DataPointer, stride, buffer.Size) });
+
 			}
 			//queryReader.Dump(Console.Out);
 
 			return tex;
 		}
-	}
+
+        private static BitmapSource LoadBitmap(string filename)
+        {
+            var bitmapDecoder = new BitmapDecoder(
+                Factory,
+                filename,
+                DecodeOptions.CacheOnDemand
+            );
+
+            var formatConverter = new FormatConverter(Factory);
+
+            formatConverter.Initialize(
+                bitmapDecoder.GetFrame(0),
+                PixelFormat.Format32bppPRGBA,
+                BitmapDitherType.None,
+                null,
+                0.0,
+                BitmapPaletteType.Custom);
+
+            return formatConverter;
+        }
+
+    }
 }

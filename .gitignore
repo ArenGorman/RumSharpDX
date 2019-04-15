@@ -31,3 +31,5 @@
 
 packages/*
 .vs/*
+
+!RumSem3/Resources/**

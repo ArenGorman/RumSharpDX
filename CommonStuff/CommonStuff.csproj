@@ -92,6 +92,7 @@
     <Compile Include="InputDevice.cs" />
     <Compile Include="LuaComplier.cs" />
     <Compile Include="ObjLoader.cs" />
+    <Compile Include="Components\ObjModelComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextureLoader.cs" />
     <Compile Include="VertexStructures\VertexPositionNormalTex.cs" />
