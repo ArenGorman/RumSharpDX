@@ -25,7 +25,8 @@ namespace RumSem3
         {
             this.bgcolor = Color.Gray;
             Components.Add(new PlaneComponent(this, camera));
-            Components.Add(new ObjModelComponent(this, "Resources/Models/skySphere.obj", "Resources/Textures/miramar.bmp", "Cube", camera, true));
+            //Components.Add(new ObjModelComponent(this, "Resources/Models/skySphere.obj", "Resources/Textures/miramar.bmp", "Cube", camera, true));
+            Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot_normal.png", "Main", camera));
             base.Initialize();
             
         }
