@@ -39,9 +39,11 @@ namespace CommonStuff
 		public DeviceContext	Context		{ get { return device?.ImmediateContext; } }
 
 		public InputDevice InputDevice { protected set; get; }
-		#endregion
+        #endregion
 
-		public TextureLoader	TextureLoader	{ protected set; get; }
+        public Renderer Renderer;
+
+        public TextureLoader	TextureLoader	{ protected set; get; }
 		public ObjLoader		ObjLoader		{ protected set; get; }
         public GameConsole      GameConsole     { protected set; get; }
 
@@ -63,8 +65,9 @@ namespace CommonStuff
 		{
 			Name = name;
 			Components = new List<GameComponent>();
+            Renderer = new Renderer(this);
 
-			clientWidth		= width;
+            clientWidth		= width;
 			clientHeight	= height;
 
 			InputDevice		= new InputDevice(this);
@@ -182,6 +185,7 @@ namespace CommonStuff
 		protected virtual void Draw(float deltaTime)
 		{
 			Components.ForEach(x => x.Draw(deltaTime));
+            Renderer.RenderScene(deltaTime);
             GameConsole.Draw(deltaTime);
 		}
 

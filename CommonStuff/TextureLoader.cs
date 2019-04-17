@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,15 @@ using SharpDX.Direct3D11;
 
 namespace CommonStuff
 {
-	public class TextureLoader
+    public enum TextureSet
+    {
+        albedo,
+        normal,
+        roughness,
+        metallness,
+        occlusion
+    }
+    public class TextureLoader
 	{
 		Game game;
 		private static ImagingFactory Factory { set; get; }
@@ -28,8 +37,6 @@ namespace CommonStuff
         {
             Texture2D tex;
             //FormatConverter converter = new FormatConverter(Factory);
-
-
 
             List<byte[]> buffers = new List<byte[]>();
 
@@ -121,6 +128,26 @@ namespace CommonStuff
 
 			return tex;
 		}
+
+        public Texture2D DebugTexture()
+        {
+            byte[] buffer= Enumerable.Repeat<byte>(0, 512 * 4).ToArray();
+            IntPtr ptr = Marshal.UnsafeAddrOfPinnedArrayElement(buffer, 0);
+            Texture2DDescription debugTextureDescription = new Texture2DDescription
+            {
+                Width = 512,
+                Height = 512,
+                ArraySize = 1,
+                BindFlags = BindFlags.ShaderResource,
+                Usage = ResourceUsage.Default,
+                CpuAccessFlags = CpuAccessFlags.None,
+                Format = Format.R8G8B8A8_UNorm,
+                MipLevels = 1,
+                OptionFlags = ResourceOptionFlags.None,
+                SampleDescription = new SampleDescription(1, 0)
+            };
+            return new Texture2D(game.Device, debugTextureDescription, new[] { new SharpDX.DataBox(ptr, 512 * 4, 512) });
+        }
 
         private static BitmapSource LoadBitmap(string filename)
         {

@@ -19,15 +19,21 @@ namespace RumSem3
         {
             camera = new Camera(this);
             camController = new CameraController(this, camera);
+            base.Renderer.camera = camera;
+            camController.CameraPosition = new Vector3(0.0f, 40.0f, 200.0f);
+            camController.Pitch = -0.15f;
         }
 
         protected override void Initialize()
         {
-            this.bgcolor = Color.Gray;
+            this.bgcolor = Color.SlateGray;
             Components.Add(new PlaneComponent(this, camera));
+            Components.Add(new AxisComponent(this, this.Renderer, camera));
+
             //Components.Add(new ObjModelComponent(this, "Resources/Models/skySphere.obj", "Resources/Textures/miramar.bmp", "Cube", camera, true));
-            Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot_normal.png", "Main", camera));
+            //Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot_albedo.png", "Main", camera));
             base.Initialize();
+            base.Renderer.Initialize();
             
         }
 

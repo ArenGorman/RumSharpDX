@@ -27,8 +27,14 @@ namespace CommonStuff.VertexStructures
 				new[] {
 						new InputElement("POSITION",    0, Format.R32G32B32A32_Float, 0, 0),
 						new InputElement("NORMAL",      0, Format.R32G32B32A32_Float, 16, 0),
-						new InputElement("TEXCOORD",    0, Format.R32G32B32A32_Float, 32, 0)
-					});
+						new InputElement("TEXCOORD",    0, Format.R32G32B32A32_Float, 32, 0),
+                        //new InputElement("POSITION", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                        //new InputElement("COLOR",    0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                        //new InputElement("TEXCOORD", 0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                        //new InputElement("TEXCOORD", 1, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                        //new InputElement("NORMAL",   0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0),
+                        //new InputElement("TANGENT",  0, Format.R32G32B32A32_Float, InputElement.AppendAligned, 0)
+                    });
 
 			stride = 48;
             return layout;

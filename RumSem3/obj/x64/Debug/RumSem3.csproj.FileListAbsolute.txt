@@ -78,8 +78,12 @@ E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_lf.jpg
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_rt.jpg
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\yellowcloud_up.jpg
-E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapont_AO.png
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapot_albedo.png
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapot_normal.png
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapot_roughness.png
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Models\teapot.obj
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\Include\Constants.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\Include\Layouts.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\PBRLightSurface.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\PBRShader.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\Include\Structures.hlsl
