@@ -33,3 +33,4 @@ packages/*
 .vs/*
 
 !RumSem3/Resources/**
+!RumSem3/bin/x64/Debug**
