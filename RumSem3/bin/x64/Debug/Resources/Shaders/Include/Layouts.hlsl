@@ -13,7 +13,7 @@ struct COMMON_VS_IN
 struct COMMON_PS_IN
 {
     float4 pos : SV_POSITION;
-    float4 cololr : COLOR;
+    float4 color : COLOR;
     float4 posWS : POSITION;
     float2 uv0 : TEXCOORD0;
     float4 uv1 : TEXCOORD1;

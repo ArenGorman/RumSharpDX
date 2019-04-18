@@ -13,11 +13,10 @@ namespace CommonStuff
     public class AxisComponent : GameComponent
     {
         Camera camera;
-        Buffer vertices;
 
-        public AxisComponent(Game game, Renderer renderer, Camera cam, Material material = null) : base(game)
+        public AxisComponent(Game game, Renderer renderer, Camera cam, Material mat = null) : base(game)
         {
-            this.Game = game;
+            this.gameInstance = game;
             this.camera = cam;
             this.Renderer = renderer;
             this.primTopology = PrimitiveTopology.LineList;
@@ -26,17 +25,17 @@ namespace CommonStuff
 
         public override void Initialize()
         {
-            material = new Material(Game, "AxisMaterial", MaterialType.ColorLines);
-
+            material = new Material(gameInstance, "AxisMaterial", MaterialType.ColorLines);
+            material.Initialize();
             layout = new InputLayout(
-                Game.Device,
+                gameInstance.Device,
                 ShaderSignature.GetInputSignature(material.vertexShaderByteCode),
                 new[] {
                         new InputElement("POSITION",    0, Format.R32G32B32A32_Float, 0, 0),
                         new InputElement("COLOR",       0, Format.R32G32B32A32_Float, 16, 0)
                     });
 
-            rastState = new RasterizerState(Game.Device, new RasterizerStateDescription {
+            rastState = new RasterizerState(gameInstance.Device, new RasterizerStateDescription {
                 CullMode = CullMode.None,
                 FillMode = FillMode.Wireframe
             });
@@ -60,10 +59,11 @@ namespace CommonStuff
                 SizeInBytes = points.Count * 32,
                 StructureByteStride = 32
             };
-            vertices = Buffer.Create(Game.Device, points.ToArray(), bufDesc);
-            bufBinding = new VertexBufferBinding(vertices, 32, 0);
+            vertBuffer = Buffer.Create(gameInstance.Device, points.ToArray(), bufDesc);
+            bufBinding = new VertexBufferBinding(vertBuffer, 32, 0);
+            vertexCount = points.Count;
 
-            constantBuffer = new Buffer(Game.Device, new BufferDescription
+            constantBuffer = new Buffer(gameInstance.Device, new BufferDescription
             {
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.None,
@@ -84,7 +84,7 @@ namespace CommonStuff
         {
             var world = Matrix.Translation(Position);
             var proj = world * camera.GetViewMatrix() * camera.GetProjectionMatrix();
-            Game.Context.UpdateSubresource(ref proj, constantBuffer);
+            gameInstance.Context.UpdateSubresource(ref proj, constantBuffer);
         }
 
         public override void DestroyResources()

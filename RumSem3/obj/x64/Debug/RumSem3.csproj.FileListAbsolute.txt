@@ -87,3 +87,11 @@ E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\PBRLightSurface.hlsl
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\PBRShader.hlsl
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Shaders\Include\Structures.hlsl
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapot_occlusion.png
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_bk_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_dn_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_ft_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_lf_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_rt_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\miramar_up_ir.bmp
+E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\Resources\Textures\teapot_metalness.png

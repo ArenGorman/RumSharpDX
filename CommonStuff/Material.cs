@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using SharpDX;
 using SharpDX.D3DCompiler;
@@ -17,7 +18,28 @@ namespace CommonStuff
         CubeMap
     }
 
-    public class PBRProperties
+    public class IncludeShader : SharpDX.CallbackBase, Include
+    {
+        private string includeDirectory;
+        public string subPath;
+
+        public IncludeShader(string shadersDirectory)
+        {
+            includeDirectory = shadersDirectory;
+        }
+
+        public void Close(Stream stream)
+        {
+            stream.Dispose();
+        }
+
+        public Stream Open(IncludeType type, string fileName, Stream parentStream)
+        {
+            return new FileStream(includeDirectory + subPath + fileName, FileMode.Open);
+        }
+    }
+
+    public class MaterialPropetyBlock
     {
         public Vector3 AlbedoColor = Vector3.One;
         public float AlphaValue = 1.0f;
@@ -25,15 +47,19 @@ namespace CommonStuff
         public float MetallicValue = 0.0f;
         public Vector2 Tile = Vector2.One;
         public Vector2 Shift = Vector2.Zero;
-    }
+    };
 
     public class Material
     {
+        private static string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static string shadersDirectory = assemblyFolder + "/Resources/Shaders/";
+        private static IncludeShader includeShader = new IncludeShader(shadersDirectory);
+
         readonly Game Game;
         readonly Device device;
         public string Name;
         public readonly MaterialType materialType;
-        string textureName;
+        public string textureName { get; set; }
 
         public VertexShader vertexShader;
         public CompilationResult vertexShaderByteCode;
@@ -43,7 +69,7 @@ namespace CommonStuff
         public ShaderResourceView pixelSRV;
 
         #region PBR shader resource views
-        List<Texture2D> pbrTextureSet;
+        List<Texture2D> pbrTextureSet = new List<Texture2D> { };
         readonly string[] pbrSuffixes = { "albedo", "normal", "roughness", "metalness", "occlusion" };
 
         public ShaderResourceView pbrAlbedoSRV;
@@ -51,8 +77,12 @@ namespace CommonStuff
         public ShaderResourceView pbrRoughnessSRV;
         public ShaderResourceView pbrMetalnessSRV;
         public ShaderResourceView pbrOcclusionSRV;
+        public ShaderResourceView radianceSRV;
+        public ShaderResourceView irradianceSRV;
+        public MaterialPropetyBlock PropetyBlock = new MaterialPropetyBlock() { AlbedoColor = Vector3.One * 0.8f };
 
-        public PBRProperties matProperties;
+
+
         #endregion
 
         public SamplerState sampler;
@@ -63,6 +93,10 @@ namespace CommonStuff
             device = game.Device;
             Name = name;
             materialType = type;
+        }
+
+        public void Initialize()
+        {
             CompileShaders();
         }
 
@@ -76,32 +110,40 @@ namespace CommonStuff
 
         bool PreparePBR()
         {
+            
             const string pbrShaderFile = "Resources/Shaders/PBRShader.hlsl";
-            vertexShaderByteCode = ShaderBytecode.CompileFromFile(pbrShaderFile, "VSMain", "vs_5_0", ShaderFlags.PackMatrixRowMajor);
-            vertexShader = new VertexShader(device, vertexShaderByteCode);
-            pixelShaderByteCode = ShaderBytecode.CompileFromFile(pbrShaderFile, "PSMain", "ps_5_0", ShaderFlags.PackMatrixRowMajor);
-            pixelShader = new PixelShader(device, pixelShaderByteCode);
-            if (vertexShaderByteCode.Message != null & pixelShaderByteCode != null)
+
+            vertexShaderByteCode = ShaderBytecode.CompileFromFile(pbrShaderFile, "VSMain", "vs_5_0", ShaderFlags.PackMatrixRowMajor, EffectFlags.None, null, includeShader);
+            if (vertexShaderByteCode.Message != null)
             {
                 Console.WriteLine(vertexShaderByteCode.Message);
                 return false;
             }
+            vertexShader = new VertexShader(device, vertexShaderByteCode);
 
-            // Load all textures and generate SRVs
+            pixelShaderByteCode = ShaderBytecode.CompileFromFile(pbrShaderFile, "PSMain", "ps_5_0", ShaderFlags.PackMatrixRowMajor, EffectFlags.None, null, includeShader);
+            if (pixelShaderByteCode.Message != null)
+            {
+                Console.WriteLine(pixelShaderByteCode.Message);
+                return false;
+            }
+            pixelShader = new PixelShader(device, pixelShaderByteCode);
+
+            // Load object textures and generate SRVs
             for (int i = 0; i < pbrSuffixes.Length; i++)
             {
                 // Load all pbr textures
                 var textureSetItem = textureName.Split('.')[0];
                 var textureSetExt = textureName.Split('.')[1];
                 // We specify our textureName in constructor as if it was file without suffixes
-                var pbrElementTexturePath = textureSetItem + pbrSuffixes[i] + '.' + textureSetExt;
+                var pbrElementTexturePath = textureSetItem + '_' + pbrSuffixes[i] + '.' + textureSetExt;
                 if (File.Exists(pbrElementTexturePath))
                 {
-                    pbrTextureSet[i] = Game.TextureLoader.LoadTextureFromFile(pbrElementTexturePath);
+                    pbrTextureSet.Add(Game.TextureLoader.LoadTextureFromFile(pbrElementTexturePath));
                 }
                 else
                 {
-                    pbrTextureSet[i] = Game.TextureLoader.DebugTexture();
+                    pbrTextureSet.Add(Game.TextureLoader.DebugTexture());
                 }
 
                 // Create ShaderResourceViews for all components
@@ -131,6 +173,14 @@ namespace CommonStuff
                     Game.Context.GenerateMips(pbrOcclusionSRV);
                 }
             }
+
+            // Load skybox textures
+
+            pbrTextureSet.Add(Game.TextureLoader.LoadCubeMapFromFiles("Resources/Textures/miramar_?.bmp"));
+            pbrTextureSet.Add(Game.TextureLoader.LoadCubeMapFromFiles("Resources/Textures/miramar_?_ir.bmp"));
+            radianceSRV = new ShaderResourceView(Game.Device, pbrTextureSet[5]);
+            irradianceSRV = new ShaderResourceView(Game.Device, pbrTextureSet[6]);
+
 
 
             return true;
@@ -162,9 +212,10 @@ namespace CommonStuff
                 Console.WriteLine(vertexShaderByteCode.Message);
                 return false;
             }
+            var texture = Game.TextureLoader.LoadTextureFromFile(textureName);
             if (texture != null)
             {
-                texSRV = new ShaderResourceView(Game.Device, texture);
+                pixelSRV = new ShaderResourceView(Game.Device, texture);
             }
             return true;
         }
@@ -197,7 +248,7 @@ namespace CommonStuff
 
         public bool CompileShaders()
         {
-            bool result;
+            bool result = false;
             switch (materialType)
             {
                 case MaterialType.PBR:
@@ -226,18 +277,35 @@ namespace CommonStuff
                         break;
                     }
             }
-
-            sampler = new SamplerState(Game.Device, new SamplerStateDescription
+            if (materialType != MaterialType.PBR)
             {
-                AddressU = TextureAddressMode.Clamp,
-                AddressV = TextureAddressMode.Clamp,
-                AddressW = TextureAddressMode.Clamp,
-                Filter = Filter.MinMagMipLinear,
-                ComparisonFunction = Comparison.Always,
-                BorderColor = new SharpDX.Mathematics.Interop.RawColor4(1.0f, 0.0f, 0.0f, 1.0f),
-                MaximumLod = int.MaxValue
-            });
-            return true;
+                sampler = new SamplerState(Game.Device, new SamplerStateDescription
+                {
+                    AddressU = TextureAddressMode.Clamp,
+                    AddressV = TextureAddressMode.Clamp,
+                    AddressW = TextureAddressMode.Clamp,
+                    Filter = Filter.MinMagMipLinear,
+                    ComparisonFunction = Comparison.Always,
+                    BorderColor = new SharpDX.Mathematics.Interop.RawColor4(1.0f, 0.0f, 0.0f, 1.0f),
+                    MaximumLod = int.MaxValue
+                });
+            }
+            else
+            {
+                sampler = new SamplerState(Game.Device, new SamplerStateDescription()
+                {
+                    Filter = Filter.MinMagMipLinear,
+                    AddressU = TextureAddressMode.Wrap,
+                    AddressV = TextureAddressMode.Wrap,
+                    AddressW = TextureAddressMode.Wrap,
+                    ComparisonFunction = Comparison.Never,
+                    MaximumAnisotropy = 16,
+                    MipLodBias = 0,
+                    MinimumLod = -float.MaxValue,
+                    MaximumLod = float.MaxValue
+                });
+            }
+            if (result) { return result; } else { throw(new Exception("Shader compilation failed")); }
         }
     }
 }

@@ -13,7 +13,6 @@ namespace RumSem3
     class ReflSphereGame : Game
     {
         Camera camera;
-        CameraController camController;
 
         public ReflSphereGame(string name) : base(name)
         {
@@ -30,10 +29,11 @@ namespace RumSem3
             Components.Add(new PlaneComponent(this, camera));
             Components.Add(new AxisComponent(this, this.Renderer, camera));
 
-            //Components.Add(new ObjModelComponent(this, "Resources/Models/skySphere.obj", "Resources/Textures/miramar.bmp", "Cube", camera, true));
-            //Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot_albedo.png", "Main", camera));
+            Components.Add(new ObjModelComponent(this, "Resources/Models/skySphere.obj", "Resources/Textures/miramar_?.bmp", MaterialType.CubeMap, camera));
+            Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot.png", MaterialType.PBR, camera));
+            //Components.Add(new ObjModelComponent(this, "Resources/Models/teapot.obj", "Resources/Textures/teapot_occlusion.png", MaterialType.Unlit, camera));
             base.Initialize();
-            base.Renderer.Initialize();
+            //Renderer.Initialize();
             
         }
 

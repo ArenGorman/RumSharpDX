@@ -9,15 +9,15 @@ namespace CommonStuff
 {
 	public abstract class GameComponent
 	{
-        public Game Game;
+        public Game gameInstance;
         public Renderer Renderer;
         public InputLayout layout;
         public RasterizerState rastState;
         public VertexBufferBinding bufBinding;
         public Buffer vertBuffer;
+        public Buffer indexBuffer;
         public Buffer constantBuffer;
         public List<Vector4> points;
-        public int buflen;
         public int vertexCount;
         public PrimitiveTopology primTopology;
         public Material material;
@@ -25,12 +25,13 @@ namespace CommonStuff
 
         public GameComponent(Game game)
 		{
-			Game = game;
+			gameInstance = game;
 		}
 
 		public abstract void Initialize();
 		public abstract void Update(float deltaTime);
 		public abstract void Draw(float deltaTime);
+        //TODO add destruction of resources
 		public abstract void DestroyResources();
 	}
 }

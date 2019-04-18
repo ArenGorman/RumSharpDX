@@ -27,6 +27,29 @@ Texture2D OcclusionMap : register(t4);
 TextureCube RaddianceEnvMap : register(t5);
 TextureCube IrradianceEnvMap : register(t6);
 
+COMMON_PS_IN VSMain(COMMON_VS_IN Input)
+{
+    COMMON_PS_IN Output = (COMMON_PS_IN) 0;
+    
+    Input.pos.w = 1.0f;
+    Output.pos = mul(Input.pos, cbPerObject.WorldViewProjMatrix);
+    Output.posWS = mul(Input.pos, cbPerObject.WorldMatrix);
+    
+    Output.color = Input.color;
+
+    Output.uv0 = float2(Input.uv0.x, 1.0 - Input.uv0.y);
+    Output.uv0.x *= cbPerObject.textureTiling.x;
+    Output.uv0.x += cbPerObject.textureShift.x;
+    Output.uv0.y *= cbPerObject.textureTiling.y;
+    Output.uv0.y += cbPerObject.textureShift.y;
+    Output.uv1.xy = Input.uv1.xy;
+
+    Output.normal = normalize(mul(float4(Input.normal.xyz, 0), cbPerObject.WorldMatrix));
+    Output.tangent = normalize(mul(float4(Input.tangent.xyz, 0), cbPerObject.WorldMatrix));
+ 
+    return Output;
+}
+
 float4 PSMain(COMMON_PS_IN Input) : SV_Target
 {
     float unlit = cbPerObject.optionsMask1.g;
@@ -83,5 +106,6 @@ float4 PSMain(COMMON_PS_IN Input) : SV_Target
     float3 V = normalize(cbPerFrame.CameraPos.xyz - Input.posWS.xyz);
 
     float3 color = LightSurface(V, NormalValue, 1, LightData, AlbedoValue, RoughnessValue, MetallicValue, OcclusionValue, RaddianceEnvMap, IrradianceEnvMap, Sampler, Input.posWS.xyz);
+    //float3 color = float3(Input.uv0.xy, 0);
     return float4(color, 1.0) * shadowDepthValue;
 }

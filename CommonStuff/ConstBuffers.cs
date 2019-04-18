@@ -18,16 +18,7 @@ namespace CommonStuff
             public float RoughnessValue;
             public float MetallicValue;
             public Vector2 filler;
-
-            //r hasAlbedoMap;
-            //g hasNormalMap;
-            //b hasRoughnessMap;
-            //a hasMetallicMap;
             public Vector4 optionsMask0;
-
-            //r hasOcclusionMap;
-            //g unlit;
-            //b nonRecieveShadows;
             public Vector4 optionsMask1;
         }
 
@@ -43,6 +34,16 @@ namespace CommonStuff
             public uint MaxNumLightsPerTile;
             public uint DirLightsNum;
             public Vector3 filler;
+        }
+
+        internal struct LightBufferStruct
+        {
+            public Matrix viewProjMatrix;
+            public Vector4 lightTint;
+            public float type;
+            public Vector3 position;
+            public Vector3 direction;
+            public float distanceSqr;
         }
 
         public struct ConstBufferDirLightStruct

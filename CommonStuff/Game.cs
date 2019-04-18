@@ -49,10 +49,12 @@ namespace CommonStuff
 
         Stopwatch	watches;
 		public TimeSpan	TotalTime { protected set; get; }
-		
 
+        public CameraController camController;
+        public int ScrWidth { get { return clientWidth; } }
+        public int ScrHeight { get { return clientHeight; } }
 
-		int clientWidth, clientHeight;
+        int clientWidth, clientHeight;
 		Texture2D			backBuffer;
 		RenderTargetView	renderView;
 		Texture2D			depthBuffer;
@@ -122,11 +124,12 @@ namespace CommonStuff
 		{
 			PrepareResources();
 
-			Initialize();
+            Initialize();
+            Renderer.Initialize();
             GameConsole.Initialize();
             Components.ForEach(x => x.Initialize());
 
-			watches = new Stopwatch();
+            watches = new Stopwatch();
 			watches.Start();
 
 			TotalTime = watches.Elapsed;
@@ -184,7 +187,7 @@ namespace CommonStuff
 
 		protected virtual void Draw(float deltaTime)
 		{
-			Components.ForEach(x => x.Draw(deltaTime));
+			//Components.ForEach(x => x.Draw(deltaTime));
             Renderer.RenderScene(deltaTime);
             GameConsole.Draw(deltaTime);
 		}

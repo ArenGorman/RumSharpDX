@@ -53,11 +53,13 @@ PS_IN VSCube(VS_IN input)
 float4 PSMain(PS_IN input) : SV_Target
 {
     float4 color = DiffuseMap.Sample(Sampler, float2(input.tex.x, 1.0f - input.tex.y));
+
     return color;
 }
 
 float4 PSCube(PS_IN input) : SV_Target
 {
     float4 color = saturate(CubeMap.Sample(Sampler, -input.normal.xyz));
+    //float4 color = float4(1,0,0,1);
     return color;
 }

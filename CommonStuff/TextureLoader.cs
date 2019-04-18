@@ -47,7 +47,7 @@ namespace CommonStuff
 
             for (int i = 0; i < filePostfixes.Length; i++)
             {
-                string fileName = fileSetName.Split('.')[0] + "_" + filePostfixes[i] + "." + fileSetName.Split('.')[1];
+                string fileName = fileSetName.Split('?')[0] + filePostfixes[i] + fileSetName.Split('?')[1];
                 BitmapSource converter = LoadBitmap(fileName);
                 //var decoder = new BitmapDecoder(Factory, fileName, DecodeOptions.CacheOnDemand);
                 //var frame = decoder.GetFrame(0);

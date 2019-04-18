@@ -20,98 +20,59 @@ namespace CommonStuff
 {
     public class ObjModelComponent : GameComponent
     {
-        ////PixelShader pixelShader;
-        ////PixelShader pixelPBRShader;
-        ////VertexShader vertexShader;
-        ////CompilationResult pixelShaderByteCode;
-        ////CompilationResult pixelPBRShaderByteCode;
-        ////CompilationResult vertexShaderByteCode;
+
         Buffer vertices;
+        Buffer indices;
         Camera camera;
-        Material material;
 
-        //Buffer perFrameConstantBuffer;
-        //Buffer perObjConstantBuffer;
-        //Buffer LightBuffer;
-
-        // REMOVE
-        Buffer constantBuffer;
-
-        ////ConstBuffers.ConstBufferPerFrameStruct s_perFrameCB;
-        ////ConstBuffers.ConstBufferPerObjectStruct s_perObjCB;
-        ////ConstBuffers.ConstBufferDirLightStruct s_DirLightCB;
-
-
-        ////Texture2D texture;
-        ////List<Texture2D> pbrTextureSet;
-
-        ////ShaderResourceView texSRV;
-        ////ShaderResourceView pbrAlbedoSRV;
-        ////ShaderResourceView pbrNormalSRV;
-        ////ShaderResourceView pbrRoughnessSRV;
-        ////ShaderResourceView pbrMetalnessSRV;
-        ////ShaderResourceView pbrOcclusionSRV;
-
-        ////SamplerState sampler;
-
-        ////string textureName = "";
-        ////string shaderName = "";
         string modelName = "";
-        ////readonly string[] pbrSuffixes = { "albedo", "normal", "roughness", "metalness", "occlusion" };
-        int elemCount = 0;
-        bool hasCubeMap;
 
-        //const string shaderFile = "Resources/Shaders/ObjModelShader.hlsl";
-        //const string pbrShaderFile = "Resources/Shaders/PBRShader.hlsl";
+        int elemCount = 0;
 
         public Matrix Transform { set; get; } = Matrix.Identity;
 
-        public ObjModelComponent(Game game, string modelName, string textureName, MaterialType materialType, Material mat, Camera cam, bool hasCubeMap = false) : base(game)
+        public ObjModelComponent(Game game, string modelName, string textureName, MaterialType materialType, Camera cam, Material mat=null) : base(game)
         {
             camera = cam;
             this.modelName = modelName;
+            Renderer = game.Renderer;
             if (mat != null)
             {
-                material = mat;
+                this.material = mat;
             }
             else
             {
-                material = new Material(game, Path.GetFileName(modelName), materialType);
+                this.material = new Material(game, Path.GetFileName(modelName).Split('.')[0], materialType);
+                this.material.textureName = textureName;
             }
-            this.hasCubeMap = hasCubeMap;
 
             Position = new Vector3(0);
         }
 
-
         public override void Initialize()
         {
-
-            // Compile Vertex and Pixel shaders
-            //vertexShaderByteCode = ShaderBytecode.CompileFromFile(shaderFile, "VS" + shaderName, "vs_5_0", ShaderFlags.PackMatrixRowMajor);
-
-            //if (vertexShaderByteCode.Message != null)
-            //{
-            //    Console.WriteLine(vertexShaderByteCode.Message);
-            //}
-
-            //vertexShader = new VertexShader(Game.Device, vertexShaderByteCode);
-
-            ////pixelShaderByteCode = ShaderBytecode.CompileFromFile(shaderFile, "PS" + shaderName, "ps_5_0", ShaderFlags.PackMatrixRowMajor);
-            ////pixelShader = new PixelShader(Game.Device, pixelShaderByteCode);
-
-            //pixelPBRShaderByteCode = ShaderBytecode.CompileFromFile(pbrShaderFile, "PS" + shaderName, "ps_5_0", ShaderFlags.PackMatrixRowMajor);
-            //pixelPBRShader = new PixelShader(Game.Device, pixelPBRShaderByteCode);
-
-
+            material.Initialize();
+            
             // Layout from VertexShader input signature
             int stride;
             var signature = ShaderSignature.GetInputSignature(material.vertexShaderByteCode);
-            layout = VertexPositionNormalTex.GetLayout(signature, out stride);
 
-            Game.ObjLoader.LoadObjModel(modelName, out vertices, out elemCount);
+            if (material.materialType == MaterialType.PBR)
+                layout = VertexPosColUV01NrmTan.GetLayout(signature, out stride);
+            else
+                layout = VertexPositionNormalTex.GetLayout(signature, out stride);
 
-            constantBuffer = new Buffer(Game.Device, new BufferDescription
+            if (material.materialType == MaterialType.PBR)
+                gameInstance.ObjLoader.LoadObjModel(modelName, out vertices, out indices, out elemCount, true);
+            else
+                gameInstance.ObjLoader.LoadObjModel(modelName, out vertices, out indices, out elemCount);
+
+
+
+            //indexBuffer = Buffer.Create(gameInstance.Device, renderer.Geometry.Indexes, IndexBufferDescription);
+
+            vertexCount = elemCount;
+            this.constantBuffer = new Buffer(gameInstance.Device, new BufferDescription
             {
                 BindFlags = BindFlags.ConstantBuffer,
                 CpuAccessFlags = CpuAccessFlags.None,
@@ -119,16 +80,15 @@ namespace CommonStuff
                 SizeInBytes = Utilities.SizeOf<Matrix>(),
                 Usage = ResourceUsage.Default
             });
-
-
-            rastState = new RasterizerState(Game.Device, new RasterizerStateDescription
+            vertBuffer = vertices;
+            bufBinding = new VertexBufferBinding(vertBuffer, stride, 0);
+            primTopology = PrimitiveTopology.TriangleList;
+            rastState = new RasterizerState(gameInstance.Device, new RasterizerStateDescription
             {
                 CullMode = CullMode.Back,
                 FillMode = FillMode.Solid
             });
-
         }
-
 
         public override void Update(float deltaTime)
         {
@@ -136,7 +96,8 @@ namespace CommonStuff
             var proj = world * camera.GetViewMatrix() * camera.GetProjectionMatrix();
 
             //Constant buffers
-            Game.Context.UpdateSubresource(ref proj, constantBuffer);
+            if (material.materialType != MaterialType.PBR)
+                gameInstance.Context.UpdateSubresource(ref proj, this.constantBuffer);
         }
 
 
@@ -153,10 +114,7 @@ namespace CommonStuff
             //context.InputAssembler.SetVertexBuffers(0, bufBinding);
             //context.VertexShader.Set(vertexShader);
             //context.PixelShader.Set(pixelShader);
-
             //context.GenerateMips(texSRV);
-
-
             //context.PixelShader.SetShaderResource(0, pbrAlbedoSRV);
             //context.PixelShader.SetShaderResource(1, pbrNormalSRV);
             //context.PixelShader.SetShaderResource(2, pbrRoughnessSRV);
@@ -165,7 +123,6 @@ namespace CommonStuff
             //context.VertexShader.SetConstantBuffer(0, constantBuffer);
             ////context.PixelShader.SetShaderResource(0, texSRV);
             //context.PixelShader.SetSampler(0, sampler);
-            
             //PixHelper.BeginEvent(Color.Red, "ObjModel Draw Event");
             //context.Draw(elemCount, 0);
             //PixHelper.EndEvent();
@@ -175,10 +132,6 @@ namespace CommonStuff
 
         public override void DestroyResources()
         {
-            pixelShader.Dispose();
-            vertexShader.Dispose();
-            pixelShaderByteCode.Dispose();
-            vertexShaderByteCode.Dispose();
             layout.Dispose();
             vertices.Dispose();
 
@@ -186,5 +139,7 @@ namespace CommonStuff
 
             constantBuffer.Dispose();
         }
+
+
     }
 }

@@ -51,15 +51,15 @@ namespace CommonStuff
 			}
 
 
-			vertexShader = new VertexShader(Game.Device, vertexShaderByteCode);
+			vertexShader = new VertexShader(gameInstance.Device, vertexShaderByteCode);
 
 			pixelShaderByteCode = ShaderBytecode.CompileFromFile("Simple.hlsl", "PSMain", "ps_5_0", ShaderFlags.PackMatrixRowMajor);
-			pixelShader = new PixelShader(Game.Device, pixelShaderByteCode);
+			pixelShader = new PixelShader(gameInstance.Device, pixelShaderByteCode);
 
 
 			// Layout from VertexShader input signature
 			layout = new InputLayout(
-				Game.Device,
+				gameInstance.Device,
 				ShaderSignature.GetInputSignature(vertexShaderByteCode),
 				new[] {
 						new InputElement("POSITION",	0, Format.R32G32B32A32_Float, 0, 0),
@@ -80,11 +80,11 @@ namespace CommonStuff
 				Usage			= ResourceUsage.Default,
 			};
 
-			vertices = Buffer.Create(Game.Device, points, bufDesc);
+			vertices = Buffer.Create(gameInstance.Device, points, bufDesc);
 
 			bufBinding = new VertexBufferBinding(vertices, 32, 0);
 
-			constantBuffer = new Buffer(Game.Device, new BufferDescription {
+			constantBuffer = new Buffer(gameInstance.Device, new BufferDescription {
 				BindFlags		= BindFlags.ConstantBuffer,
 				CpuAccessFlags	= CpuAccessFlags.None,
 				OptionFlags		= ResourceOptionFlags.None,
@@ -93,7 +93,7 @@ namespace CommonStuff
 			});
 
 
-			rastState = new RasterizerState(Game.Device, new RasterizerStateDescription {
+			rastState = new RasterizerState(gameInstance.Device, new RasterizerStateDescription {
 				CullMode = CullMode.None,
 				FillMode = FillMode.Solid
 			});
@@ -104,12 +104,12 @@ namespace CommonStuff
 			var world	= Matrix.Translation(Position);
 			var proj	= world * camera.GetViewMatrix() * camera.GetProjectionMatrix();
 
-            Game.Context.UpdateSubresource(ref proj, constantBuffer);
+            gameInstance.Context.UpdateSubresource(ref proj, constantBuffer);
 		}
 
 		public override void Draw(float deltaTime)
 		{
-			var context = Game.Context;
+			var context = gameInstance.Context;
 
 			var oldState = context.Rasterizer.State;
 			context.Rasterizer.State = rastState;
