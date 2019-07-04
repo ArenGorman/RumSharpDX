@@ -43,8 +43,8 @@ namespace CommonStuff
     {
         public Vector3 AlbedoColor = Vector3.One;
         public float AlphaValue = 1.0f;
-        public float RoughnessValue = 0.5f;
-        public float MetallicValue = 0.0f;
+        public float RoughnessValue = 1.0f;
+        public float MetallicValue = 0.5f;
         public Vector2 Tile = Vector2.One;
         public Vector2 Shift = Vector2.Zero;
     };
