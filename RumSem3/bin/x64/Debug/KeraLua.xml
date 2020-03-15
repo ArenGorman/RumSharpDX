@@ -247,6 +247,7 @@
         <member name="M:KeraLua.Lua.Error">
             <summary>
             Generates a Lua error, using the value at the top of the stack as the error object. This function does a long jump
+            (We want it to be inlined to avoid issues with managed stack)
             </summary>
             <returns></returns>
         </member>
@@ -1534,7 +1535,7 @@
              true if this function invocation was called by a tail call. In this case, the caller of this level is not in the stack.
             </summary>
         </member>
-        <member name="F:KeraLua.LuaDebug.ShortSource">
+        <member name="P:KeraLua.LuaDebug.ShortSource">
             <summary>
             a "printable" version of source, to be used in error messages
             </summary>

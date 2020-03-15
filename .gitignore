@@ -22,12 +22,15 @@
 *.la
 *.a
 *.lib
+*.dll
 
 # Executables
 *.exe
 *.out
 *.app
 
+
+*.pdb
 
 packages/*
 .vs/*

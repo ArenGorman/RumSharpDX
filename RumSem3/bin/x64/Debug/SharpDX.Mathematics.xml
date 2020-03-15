@@ -694,6 +694,31 @@
             <param name="minimum">The minimum vertex of the bounding box.</param>
             <param name="maximum">The maximum vertex of the bounding box.</param>
         </member>
+        <member name="P:SharpDX.BoundingBox.Width">
+            <summary>
+            Returns the width of the bounding box
+            </summary>
+        </member>
+        <member name="P:SharpDX.BoundingBox.Height">
+            <summary>
+            Returns the height of the bounding box
+            </summary>
+        </member>
+        <member name="P:SharpDX.BoundingBox.Depth">
+            <summary>
+            Returns the height of the bounding box
+            </summary>
+        </member>
+        <member name="P:SharpDX.BoundingBox.Size">
+            <summary>
+            Returns the size of the bounding box
+            </summary>
+        </member>
+        <member name="P:SharpDX.BoundingBox.Center">
+            <summary>
+            Returns the size of the bounding box
+            </summary>
+        </member>
         <member name="M:SharpDX.BoundingBox.GetCorners">
             <summary>
             Retrieves the eight corners of the bounding box.
@@ -13358,6 +13383,20 @@
             <param name="value">The vector to negate.</param>
             <returns>A vector facing in the opposite direction.</returns>
         </member>
+        <member name="M:SharpDX.Vector2.Abs(SharpDX.Vector2@,SharpDX.Vector2@)">
+            <summary>
+            Returns per component absolute value of a vector
+            </summary>
+            <param name="value">Input vector</param>
+            <param name="result">When the method completes, contains a vector with each component being the absolute value of the input component</param>
+        </member>
+        <member name="M:SharpDX.Vector2.Abs(SharpDX.Vector2)">
+            <summary>
+            Returns per component absolute value of a vector
+            </summary>
+            <param name="value">Input vector</param>
+            <returns>A vector with each component being the absolute value of the input component</returns>
+        </member>
         <member name="M:SharpDX.Vector2.Barycentric(SharpDX.Vector2@,SharpDX.Vector2@,SharpDX.Vector2@,System.Single,System.Single,SharpDX.Vector2@)">
             <summary>
             Returns a <see cref="T:SharpDX.Vector2"/> containing the 2D Cartesian coordinates of a point specified in Barycentric coordinates relative to a 2D triangle.
@@ -14361,6 +14400,20 @@
             </summary>
             <param name="value">The vector to negate.</param>
             <returns>A vector facing in the opposite direction.</returns>
+        </member>
+        <member name="M:SharpDX.Vector3.Abs(SharpDX.Vector3@,SharpDX.Vector3@)">
+            <summary>
+            Returns per component absolute value of a vector
+            </summary>
+            <param name="value">Input vector</param>
+            <param name="result">When the method completes, contains a vector with each component being the absolute value of the input component</param>
+        </member>
+        <member name="M:SharpDX.Vector3.Abs(SharpDX.Vector3)">
+            <summary>
+            Returns per component absolute value of a vector
+            </summary>
+            <param name="value">Input vector</param>
+            <returns>A vector with each component being the absolute value of the input component</returns>
         </member>
         <member name="M:SharpDX.Vector3.Barycentric(SharpDX.Vector3@,SharpDX.Vector3@,SharpDX.Vector3@,System.Single,System.Single,SharpDX.Vector3@)">
             <summary>
