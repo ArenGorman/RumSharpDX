@@ -21,7 +21,7 @@ using FontFactory = SharpDX.DirectWrite.Factory;
 
 namespace CommonStuff
 {
-    public class GameConsole : GameComponent
+    public class Console : GameComponent
     { 
         public bool ShowConsole {protected set; get; }
         SharpDX.Direct2D1.Factory D2DFactory;
@@ -45,7 +45,7 @@ namespace CommonStuff
         LuaCompiller compiller;
 
 
-        public GameConsole(Game game) : base(game)
+        public Console(Game game) : base(game)
         {
             this.gameInstance = game;
             
@@ -90,8 +90,8 @@ namespace CommonStuff
             textWriter = new GameTextWriter(renderTarget2D);
             textWriter.Offset = consolePos.X;
 
-            
-            Console.WriteLine("Text console initiated");
+
+            System.Console.WriteLine("Text console initiated");
         }
 
         public override void Update(float deltaTime)
@@ -156,16 +156,16 @@ namespace CommonStuff
             }
             else if ((int)e.KeyChar == (int)Keys.Enter)
             {
-                Console.WriteLine(rawInput);
+                System.Console.WriteLine(rawInput);
                 try
                 {
                     string res = "";
                     res = compiller.DoCode(rawInput);
-                    Console.WriteLine(res);
+                    System.Console.WriteLine(res);
                 }
                 catch (Exception exc)
                 {
-                    Console.WriteLine(exc.Message);
+                    System.Console.WriteLine(exc.Message);
                 }
 
                 rawInput = "";
@@ -249,8 +249,8 @@ namespace CommonStuff
 
         public OutputCapture()
         {
-            this.stdOutWriter = Console.Out;
-            Console.SetOut(this);
+            this.stdOutWriter = System.Console.Out;
+            System.Console.SetOut(this);
             Captured = new System.IO.StringWriter();
         }
 

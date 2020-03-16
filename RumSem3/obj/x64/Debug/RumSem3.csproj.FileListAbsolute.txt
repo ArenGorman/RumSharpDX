@@ -65,7 +65,6 @@ E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.DX
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.DXGI.xml
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.Mathematics.pdb
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.Mathematics.xml
-E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.RawInput.pdb
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\bin\x64\Debug\SharpDX.RawInput.xml
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\obj\x64\Debug\RumSem3.csprojAssemblyReference.cache
 E:\YandexDisk\_IFMO\3rd_SEM\Graphics\RumSharpDX\RumSem3\obj\x64\Debug\RumSem3.csproj.CoreCompileInputs.cache
