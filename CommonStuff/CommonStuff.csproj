@@ -89,7 +89,7 @@
     <Compile Include="Components\PlaneComponent.cs" />
     <Compile Include="Components\TriangleComponent.cs" />
     <Compile Include="RenderableComponent.cs" />
-    <Compile Include="Console.cs" />
+    <Compile Include="GameConsole.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameComponent.cs" />
     <Compile Include="InputDevice.cs" />

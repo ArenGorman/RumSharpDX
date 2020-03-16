@@ -21,7 +21,7 @@ using FontFactory = SharpDX.DirectWrite.Factory;
 
 namespace CommonStuff
 {
-    public class Console : GameComponent
+    public class GameConsole : GameComponent
     { 
         public bool ShowConsole {protected set; get; }
         SharpDX.Direct2D1.Factory D2DFactory;
@@ -45,7 +45,7 @@ namespace CommonStuff
         LuaCompiller compiller;
 
 
-        public Console(Game game) : base(game)
+        public GameConsole(Game game) : base(game)
         {
             this.gameInstance = game;
             
@@ -91,7 +91,7 @@ namespace CommonStuff
             textWriter.Offset = consolePos.X;
 
 
-            System.Console.WriteLine("Text console initiated");
+            Console.WriteLine("Text console initiated");
         }
 
         public override void Update(float deltaTime)
@@ -145,7 +145,7 @@ namespace CommonStuff
 
         public void Input(object sender, KeyPressEventArgs e)
         {
-            if ((int)e.KeyChar == (int)System.Windows.Forms.Keys.NumPad0) // IDK why but tilde has the same code as numpad0
+            if ((int)e.KeyChar == (int)Keys.NumPad0) // IDK why but tilde has the same code as numpad0
             {
                 ShowConsole = !ShowConsole;
                 gameInstance.blockMovementInput = ShowConsole;
@@ -156,16 +156,16 @@ namespace CommonStuff
             }
             else if ((int)e.KeyChar == (int)Keys.Enter)
             {
-                System.Console.WriteLine(rawInput);
+                Console.WriteLine(rawInput);
                 try
                 {
                     string res = "";
                     res = compiller.DoCode(rawInput);
-                    System.Console.WriteLine(res);
+                    Console.WriteLine(res);
                 }
                 catch (Exception exc)
                 {
-                    System.Console.WriteLine(exc.Message);
+                    Console.WriteLine(exc.Message);
                 }
 
                 rawInput = "";

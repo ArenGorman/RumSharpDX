@@ -34,6 +34,9 @@
 
 packages/*
 .vs/*
-
+*/bin/
+bin/*
+*/obj/
+obj/*
 !RumSem3/Resources/**
-!RumSem3/bin/x64/Debug**
+#!RumSem3/bin/x64/Debug**
