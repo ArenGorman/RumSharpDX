@@ -10,7 +10,7 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace CommonStuff
 {
-    public class AxisComponent : GameComponent
+    public class AxisComponent : MeshComponent
     {
         Camera camera;
 
@@ -25,11 +25,11 @@ namespace CommonStuff
 
         public override void Initialize()
         {
-            material = new Material(gameInstance, "AxisMaterial", MaterialType.ColorLines);
-            material.Initialize();
+            Material = new Material(gameInstance, "AxisMaterial", MaterialType.ColorLines);
+            Material.Initialize();
             layout = new InputLayout(
                 gameInstance.Device,
-                ShaderSignature.GetInputSignature(material.vertexShaderByteCode),
+                ShaderSignature.GetInputSignature(Material.vertexShaderByteCode),
                 new[] {
                         new InputElement("POSITION",    0, Format.R32G32B32A32_Float, 0, 0),
                         new InputElement("COLOR",       0, Format.R32G32B32A32_Float, 16, 0)
@@ -89,7 +89,7 @@ namespace CommonStuff
 
         public override void DestroyResources()
         {
-            material.DestroyResources();
+            Material.DestroyResources();
 
         }
     }

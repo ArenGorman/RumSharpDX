@@ -15,7 +15,7 @@ using SharpDX.Direct3D;
 
 namespace CommonStuff
 {
-	public class TriangleComponent : GameComponent
+	public class TriangleComponent : MeshComponent
 	{
 		PixelShader			pixelShader;
 		VertexShader		vertexShader;

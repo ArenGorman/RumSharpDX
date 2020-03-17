@@ -31,7 +31,6 @@ namespace CommonStuff
         List<string> consoleLog;
         string rawInput;
         string inputInvitation;
-        Game gameInstance;
         RenderTarget renderTarget2D;
         RenderTargetView renderView;
         Texture2D backBuffer;

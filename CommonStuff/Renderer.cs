@@ -86,7 +86,7 @@ namespace CommonStuff
 
         //}
 
-        private void InitializeComponent(ref GameComponent component)
+        private void InitializeComponent(ref MeshComponent component)
         {
             ////component.Initialize();
             var layout = component.layout;
@@ -115,10 +115,10 @@ namespace CommonStuff
 
         public void RenderScene(float deltaSeconds)
         {
-            gameInstance.Components.ForEach(x => DrawComponent(x, deltaSeconds));
+            gameInstance.Components.ForEach(x => DrawComponent((MeshComponent) x, deltaSeconds));
         }
 
-        public void DrawComponent(GameComponent component, float deltaSeconds)
+        public void DrawComponent(MeshComponent component, float deltaSeconds)
         {
             component.Update(deltaSeconds);
 
@@ -137,26 +137,26 @@ namespace CommonStuff
             gameInstance.Context.InputAssembler.InputLayout = component.layout;
             gameInstance.Context.InputAssembler.PrimitiveTopology = component.primTopology;
             gameInstance.Context.InputAssembler.SetVertexBuffers(0, component.bufBinding);
-            gameInstance.Context.VertexShader.Set(component.material.vertexShader);
-            gameInstance.Context.PixelShader.Set(component.material.pixelShader);
-            if (component.material.materialType != MaterialType.PBR)
+            gameInstance.Context.VertexShader.Set(component.Material.vertexShader);
+            gameInstance.Context.PixelShader.Set(component.Material.pixelShader);
+            if (component.Material.materialType != MaterialType.PBR)
                 gameInstance.Context.VertexShader.SetConstantBuffer(0, component.constantBuffer);
 
             // Now prepare shader specific resources
-            if (component.material.materialType == MaterialType.CubeMap | component.material.materialType == MaterialType.Unlit)
+            if (component.Material.materialType == MaterialType.CubeMap | component.Material.materialType == MaterialType.Unlit)
             {
-                gameInstance.Context.PixelShader.SetShaderResource(0, component.material.pixelSRV);
-                gameInstance.Context.PixelShader.SetSampler(0, component.material.sampler);
+                gameInstance.Context.PixelShader.SetShaderResource(0, component.Material.pixelSRV);
+                gameInstance.Context.PixelShader.SetSampler(0, component.Material.sampler);
             }
-            else if (component.material.materialType == MaterialType.PBR)
+            else if (component.Material.materialType == MaterialType.PBR)
             {
-                gameInstance.Context.PixelShader.SetShaderResource(0, component.material.pbrAlbedoSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(1, component.material.pbrNormalSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(2, component.material.pbrRoughnessSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(3, component.material.pbrMetalnessSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(4, component.material.pbrOcclusionSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(5, component.material.radianceSRV);
-                gameInstance.Context.PixelShader.SetShaderResource(6, component.material.irradianceSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(0, component.Material.pbrAlbedoSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(1, component.Material.pbrNormalSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(2, component.Material.pbrRoughnessSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(3, component.Material.pbrMetalnessSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(4, component.Material.pbrOcclusionSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(5, component.Material.radianceSRV);
+                gameInstance.Context.PixelShader.SetShaderResource(6, component.Material.irradianceSRV);
 
                 // Constant buffers
 
@@ -165,12 +165,12 @@ namespace CommonStuff
                     WorldMatrix = Matrix.Translation(component.Position),
                     WorldViewMatrix = Matrix.Translation(component.Position) * camera.ViewMatrix,
                     WorldViewProjMatrix = Matrix.Translation(component.Position) * camera.ViewMatrix * camera.GetProjectionMatrix(),
-                    textureTiling = component.material.PropetyBlock.Tile,
-                    textureShift = component.material.PropetyBlock.Shift,
+                    textureTiling = component.Material.PropetyBlock.Tile,
+                    textureShift = component.Material.PropetyBlock.Shift,
 
-                    AlbedoColor = new Vector4(component.material.PropetyBlock.AlbedoColor, component.material.PropetyBlock.AlphaValue),
-                    RoughnessValue = component.material.PropetyBlock.RoughnessValue,
-                    MetallicValue = component.material.PropetyBlock.MetallicValue,
+                    AlbedoColor = new Vector4(component.Material.PropetyBlock.AlbedoColor, component.Material.PropetyBlock.AlphaValue),
+                    RoughnessValue = component.Material.PropetyBlock.RoughnessValue,
+                    MetallicValue = component.Material.PropetyBlock.MetallicValue,
 
                     optionsMask0 = new Vector4(1, 1, 1, 1),
                     optionsMask1 = new Vector4(1, 0, 1, 0),
@@ -203,12 +203,12 @@ namespace CommonStuff
                 gameInstance.Context.VertexShader.SetConstantBuffer(0, PerObjConstantBuffer);
                 gameInstance.Context.VertexShader.SetConstantBuffer(1, PerFrameConstantBuffer);
                 gameInstance.Context.VertexShader.SetConstantBuffer(2, LightBuffer);
-                gameInstance.Context.VertexShader.Set(component.material.vertexShader);
+                gameInstance.Context.VertexShader.Set(component.Material.vertexShader);
 
                 gameInstance.Context.PixelShader.SetConstantBuffer(0, PerObjConstantBuffer);
                 gameInstance.Context.PixelShader.SetConstantBuffer(1, PerFrameConstantBuffer);
                 gameInstance.Context.PixelShader.SetConstantBuffer(2, LightBuffer);
-                gameInstance.Context.PixelShader.Set(component.material.pixelShader);
+                gameInstance.Context.PixelShader.Set(component.Material.pixelShader);
 
             }
 

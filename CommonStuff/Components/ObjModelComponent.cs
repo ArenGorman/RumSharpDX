@@ -18,7 +18,7 @@ using CommonStuff.VertexStructures;
 
 namespace CommonStuff
 {
-    public class ObjModelComponent : GameComponent
+    public class ObjModelComponent : MeshComponent
     {
 
         Buffer vertices;
@@ -38,12 +38,12 @@ namespace CommonStuff
             Renderer = game.Renderer;
             if (mat != null)
             {
-                this.material = mat;
+                this.Material = mat;
             }
             else
             {
-                this.material = new Material(game, Path.GetFileName(modelName).Split('.')[0], materialType);
-                this.material.textureName = textureName;
+                this.Material = new Material(game, Path.GetFileName(modelName).Split('.')[0], materialType);
+                this.Material.textureName = textureName;
             }
 
             Position = new Vector3(0);
@@ -51,18 +51,18 @@ namespace CommonStuff
 
         public override void Initialize()
         {
-            material.Initialize();
+            Material.Initialize();
             
             // Layout from VertexShader input signature
             int stride;
-            var signature = ShaderSignature.GetInputSignature(material.vertexShaderByteCode);
+            var signature = ShaderSignature.GetInputSignature(Material.vertexShaderByteCode);
 
-            if (material.materialType == MaterialType.PBR)
+            if (Material.materialType == MaterialType.PBR)
                 layout = VertexPosColUV01NrmTan.GetLayout(signature, out stride);
             else
                 layout = VertexPositionNormalTex.GetLayout(signature, out stride);
 
-            if (material.materialType == MaterialType.PBR)
+            if (Material.materialType == MaterialType.PBR)
                 gameInstance.ObjLoader.LoadObjModel(modelName, out vertices, out indices, out elemCount, true);
             else
                 gameInstance.ObjLoader.LoadObjModel(modelName, out vertices, out indices, out elemCount);
@@ -96,7 +96,7 @@ namespace CommonStuff
             var proj = world * camera.GetViewMatrix() * camera.GetProjectionMatrix();
 
             //Constant buffers
-            if (material.materialType != MaterialType.PBR)
+            if (Material.materialType != MaterialType.PBR)
                 gameInstance.Context.UpdateSubresource(ref proj, this.constantBuffer);
         }
 

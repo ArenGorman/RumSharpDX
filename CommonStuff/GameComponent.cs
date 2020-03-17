@@ -7,21 +7,18 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace CommonStuff
 {
+    public interface IGameComponent
+    {
+        Game Game { get; set; }
+        void Initialize();
+        void Update(float deltaTime);
+        void Draw(float deltaTime);
+        void DestroyResources();
+    }
+
 	public abstract class GameComponent
 	{
         public Game gameInstance;
-        public Renderer Renderer;
-        public InputLayout layout;
-        public RasterizerState rastState;
-        public VertexBufferBinding bufBinding;
-        public Buffer vertBuffer;
-        public Buffer indexBuffer;
-        public Buffer constantBuffer;
-        public List<Vector4> points;
-        public int vertexCount;
-        public PrimitiveTopology primTopology;
-        public Material material;
-        public Vector3 Position;
 
         public GameComponent(Game game)
 		{

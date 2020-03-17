@@ -14,8 +14,8 @@ using Device = SharpDX.Direct3D11.Device;
 
 namespace CommonStuff
 {
-	public class PlaneComponent : GameComponent
-	{
+	public class PlaneComponent : MeshComponent
+    {
         Camera camera;
         //Device device;
 
@@ -32,12 +32,12 @@ namespace CommonStuff
 
 		public override void Initialize()
 		{
-            material = new Material(gameInstance, "PlaneMaterial", MaterialType.ColorLines);
-            material.Initialize();
+            Material = new Material(gameInstance, "PlaneMaterial", MaterialType.ColorLines);
+            Material.Initialize();
             // Layout from VertexShader input signature
             layout = new InputLayout(
                 gameInstance.Device,
-                ShaderSignature.GetInputSignature(material.vertexShaderByteCode),
+                ShaderSignature.GetInputSignature(Material.vertexShaderByteCode),
                 new[] {
                         new InputElement("POSITION",    0, Format.R32G32B32A32_Float, 0, 0),
                         new InputElement("COLOR",       0, Format.R32G32B32A32_Float, 16, 0)
@@ -123,7 +123,7 @@ namespace CommonStuff
             //vertexShader.Dispose();
             //pixelShaderByteCode.Dispose();
             //vertexShaderByteCode.Dispose();
-            material.DestroyResources();
+            Material.DestroyResources();
 			layout.Dispose();
 			//vertices.Dispose();
 

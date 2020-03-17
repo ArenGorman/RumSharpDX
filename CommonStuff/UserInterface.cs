@@ -3,51 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpDX;
+using ImGuiNET;
 
 namespace CommonStuff
 {
-    struct Particle
+    class UserInterface : GameComponent
     {
-        Vector3 pos;
-        Vector3 prevPos;
-        Vector3 velocity;
-
-        float life;
-
-    }
-
-    class ParticleSystemComponent : MeshComponent
-    {
-        Game game;
-
-        public Vector3 position { get; set; }
-        public Vector3 rotation { get; set; }
-        new public uint vertexCount;
-
-
-        public ParticleSystemComponent(Game game) : base(game)
+        public UserInterface(Game game) : base(game)
         {
-            gameInstance = game;
-
+            throw new NotImplementedException();
         }
-
         public override void Initialize()
         {
             throw new NotImplementedException();
         }
-
-        public override void DestroyResources()
+        public override void Update(float deltaTime)
         {
             throw new NotImplementedException();
         }
-
         public override void Draw(float deltaTime)
         {
             throw new NotImplementedException();
         }
-
-        public override void Update(float deltaTime)
+        public override void DestroyResources()
         {
             throw new NotImplementedException();
         }
