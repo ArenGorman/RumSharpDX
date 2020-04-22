@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SharpDX;
-using CommonStuff;
+using Core;
 using System.Windows.Forms;
 
 namespace RumSem3
@@ -12,7 +8,6 @@ namespace RumSem3
     class ConsoleGame : Game
     {
         Camera camera;
-        CameraController camController;
 
         public ConsoleGame(string name) : base(name)
         {
@@ -22,7 +17,7 @@ namespace RumSem3
 
         protected override void Initialize()
         {
-            Components.Add(new PlaneComponent(this, camera));
+            Components.Add(new Core.Components.PlaneComponent(this, camera));
             base.Initialize();
         }
 

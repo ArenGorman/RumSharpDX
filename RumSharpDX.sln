@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonStuff", "CommonStuff\CommonStuff.csproj", "{BBFB9336-9B9B-4D50-BEBE-AC0D6456602B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{BBFB9336-9B9B-4D50-BEBE-AC0D6456602B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RumSem3", "RumSem3\RumSem3.csproj", "{60D8AAC0-603F-4E8C-B0F5-3456AAA8F0E8}"
 EndProject
